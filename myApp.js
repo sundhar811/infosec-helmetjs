@@ -30,7 +30,7 @@ const helmet = require('helmet');
 // people off. e.g. `helmet.hidePoweredBy({ setTo: 'PHP 4.2.0' })`
 
 // Use `helmet.hidePoweredBy()``
-app.use(helmet.hidePoweredBy({ setTo: 'Millennium Falcon' }));
+// app.use(helmet.hidePoweredBy({ setTo: 'Millennium Falcon' }));
 
 
 /** 3) Mitigate the risk of clickjacking - `helmet.frameguard()` */
@@ -45,7 +45,7 @@ app.use(helmet.hidePoweredBy({ setTo: 'Millennium Falcon' }));
 
 // We don't need our app to be framed, so you should use `helmet.frameguard()`
 // passing to it the configuration object `{action: 'deny'}`
-app.use(helmet.frameguard({ action: 'deny' }));
+// app.use(helmet.frameguard({ action: 'deny' }));
  
 
 /** 4) Mitigate the risk of XSS - `helmet.xssFilter()` */
@@ -68,7 +68,7 @@ app.use(helmet.frameguard({ action: 'deny' }));
 // It still has limited support.
 
 // Use `helmet.xssFilter()`
-app.use(helmet.xssFilter())
+// app.use(helmet.xssFilter())
 
 
 /** 5) Avoid inferring the response MIME type - `helmet.noSniff()` */
@@ -81,7 +81,7 @@ app.use(helmet.xssFilter())
 // instructing the browser to not bypass the provided `Content-Type`.
 
 // Use `helmet.noSniff()`
-app.use(helmet.noSniff());
+// app.use(helmet.noSniff());
 
 
 /** 6) Prevent IE from opening *untrusted* HTML - `helmet.ieNoOpen()` */
@@ -94,7 +94,7 @@ app.use(helmet.noSniff());
 // to prevent IE users from executing downloads in the *trusted* site's context.
 
 // Use `helmet.ieNoOpen()`
-app.use(helmet.ieNoOpen());
+// app.use(helmet.ieNoOpen());
 
 
 /**  7) Ask browsers to access your site via HTTPS only - `helmet.hsts()` */
@@ -114,7 +114,7 @@ app.use(helmet.ieNoOpen());
 // policy we will intercept and restore the header, after inspecting it for testing.
 
 var ninetyDaysInMilliseconds = 90*24*60*60*1000;
-app.use(helmet.hsts({ maxAge: ninetyDaysInMilliseconds, force: true }));
+// app.use(helmet.hsts({ maxAge: ninetyDaysInMilliseconds, force: true }));
 
 //**Note**:
 // Configuring HTTPS on a custom website requires the acquisition of a domain,
@@ -132,7 +132,7 @@ app.use(helmet.hsts({ maxAge: ninetyDaysInMilliseconds, force: true }));
 // DNS prefetching, at the cost of a performance penalty.
 
 // Use `helmet.dnsPrefetchControl()`
-app.use(helmet.dnsPrefetchControl({ allow: false }));
+// app.use(helmet.dnsPrefetchControl({ allow: false }));
 
 
 /** 9) Disable Client-Side Caching - `helmet.noCache()` */
@@ -144,7 +144,7 @@ app.use(helmet.dnsPrefetchControl({ allow: false }));
 // use this option only when there is a real need.
 
 // Use helmet.noCache()
-app.use(helmet.noCache());
+// app.use(helmet.noCache());
 
 
 /** 10) Content Security Policy - `helmet.contentSecurityPolicy()` */
@@ -175,12 +175,12 @@ app.use(helmet.noCache());
 // in the `"'self'"` keyword, the single quotes are part of the keyword itself, 
 // so it needs to be enclosed in **double quotes** to be working.
 
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", 'trusted-cdn.com']
-  }
-}))
+// app.use(helmet.contentSecurityPolicy({
+//   directives: {
+//     defaultSrc: ["'self'"],
+//     scriptSrc: ["'self'", 'trusted-cdn.com']
+//   }
+// }))
 
 /** TIP: */ 
 
@@ -206,6 +206,23 @@ app.use(helmet.contentSecurityPolicy({
 // We introduced each middleware separately, for teaching purpose, and for
 // ease of testing. Using the 'parent' `helmet()` middleware is easiest, and
 // cleaner, for a real project.
+
+app.use(helmet({
+  hidePoweredBy: { setTo: 'Millennium Falcon' },
+  frameguard: { action: 'deny' },
+  xssFilter: true,
+  noSniff: true,
+  ieNoOpen: true,
+  hsts: { maxAge: ninetyDaysInMilliseconds, force: true },
+  dnsPrefetchControl: { allow: false },
+  noCache: true,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", 'trusted-cdn.com']
+    }
+  }
+}))
 
 // ---- DO NOT EDIT BELOW THIS LINE ---------------------------------------
 
